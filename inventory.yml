@@ -1,0 +1,14 @@
+---
+environment_vagrant:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  hosts:
+    foo:
+      ansible_host: 192.168.50.2      
+    bar:
+      ansible_host: 192.168.50.11
+    baz:
+      ansible_host: 192.168.50.12
+dhcp_server:
+  hosts:
+    foo:

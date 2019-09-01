@@ -1,0 +1,31 @@
+---
+- hosts: dhcp_server
+  become: yes
+  handlers:
+    - name: restart dnsmasq
+      systemd:
+        name: dnsmasq
+        state: restarted
+
+  tasks:
+    - name: install dnsmasq
+      apt:
+        name: dnsmasq
+        state: present
+        force_apt_get: yes
+
+    - name: configure dnsmasq
+      copy:
+        dest: /etc/dnsmasq.d/dhcp
+        owner: root
+        group: root
+        mode: 0644
+        content: |
+          # turn off DNS
+          port=0
+          # turn on DHCP
+          dhcp-range=192.168.50.11,192.168.50.150,12h
+          dhcp-host=08:00:27:00:00:01,192.168.50.11
+          dhcp-host=08:00:27:00:00:02,192.168.50.12
+      notify: restart dnsmasq
+
